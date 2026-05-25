@@ -17,33 +17,23 @@ logging.getLogger("pyrogram").setLevel(logging.ERROR)
 
 logger = logging.getLogger(__name__)
 
+app = Client(
+    name=SESSION,
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN,
+    workers=4,
+    sleep_threshold=10,
+)
 
-class FuyukiBot(Client):
-    def __init__(self):
-        super().__init__(
-            name=SESSION,
-            api_id=API_ID,
-            api_hash=API_HASH,
-            bot_token=BOT_TOKEN,
-            workers=4,
-            sleep_threshold=10,
-            plugins=dict(root="plugins"),  # auto-load plugins/ folder
-        )
-
-
-bot = FuyukiBot()
+import plugins.start  # noqa
 
 
 async def main():
-    # 1. MongoDB connect
     await connect_db()
-
-    # 2. Web server start (Render/Koyeb health check ke liye)
     await start_webserver(PORT)
-
-    # 3. Bot start
-    await bot.start()
-    me = await bot.get_me()
+    await app.start()
+    me = await app.get_me()
 
     tz = pytz.timezone(TIMEZONE)
     now = datetime.now(tz)
@@ -58,14 +48,14 @@ async def main():
         f"🛠️ Bᴜɪʟᴅ Sᴛᴀᴛᴜs:  {BUILD_VERSION} [ Sᴛᴀʙʟᴇ ]"
     )
 
-    await bot.send_message(chat_id=LOG_CHANNEL, text=restart_msg)
+    await app.send_message(chat_id=LOG_CHANNEL, text=restart_msg)
     logger.info(f"Bot @{me.username} started successfully.")
 
     await idle()
-
-    await bot.stop()
+    await app.stop()
     await close_db()
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+    
