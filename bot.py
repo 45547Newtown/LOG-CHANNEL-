@@ -8,6 +8,8 @@ from info import (
     API_ID, API_HASH, BOT_TOKEN,
     LOG_CHANNEL, SESSION, PORT, TIMEZONE, BUILD_VERSION
 )
+from database import connect_db, close_db
+from keep_alive import start_webserver
 
 logging.config.fileConfig("logging.conf")
 logging.getLogger().setLevel(logging.INFO)
@@ -25,6 +27,7 @@ class FuyukiBot(Client):
             bot_token=BOT_TOKEN,
             workers=4,
             sleep_threshold=10,
+            plugins=dict(root="plugins"),  # auto-load plugins/ folder
         )
 
 
@@ -32,6 +35,13 @@ bot = FuyukiBot()
 
 
 async def main():
+    # 1. MongoDB connect
+    await connect_db()
+
+    # 2. Web server start (Render/Koyeb health check ke liye)
+    await start_webserver(PORT)
+
+    # 3. Bot start
     await bot.start()
     me = await bot.get_me()
 
@@ -52,7 +62,9 @@ async def main():
     logger.info(f"Bot @{me.username} started successfully.")
 
     await idle()
+
     await bot.stop()
+    await close_db()
 
 
 if __name__ == "__main__":

@@ -1,0 +1,33 @@
+# ════════════════════════════════════════════
+#   Render.com — FuyukiBot Deploy Config
+# ════════════════════════════════════════════
+services:
+  - type: web                  # "web" type — Render HTTP health check enable hoga
+    name: fuyuki-bot
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+
+    healthCheckPath: /health   # keep_alive.py ka /health endpoint
+
+    envVars:
+      - key: SESSION
+        value: FuyukiBot
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: LOG_CHANNEL
+        sync: false
+      - key: MONGO_URI
+        sync: false
+      - key: DB_NAME
+        value: FuyukiBot
+      - key: TIMEZONE
+        value: Asia/Kolkata
+      - key: BUILD_VERSION
+        value: v1.4
+      - key: PORT
+        value: "8080"

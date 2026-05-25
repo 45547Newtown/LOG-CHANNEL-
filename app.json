@@ -1,0 +1,24 @@
+{
+  "name": "FuyukiBot",
+  "description": "Fuyuki Telegram Bot",
+  "repository": "",
+  "logo": "",
+  "keywords": ["telegram", "bot", "pyrogram"],
+  "env": {
+    "SESSION":       { "description": "Pyrogram session name",          "value": "FuyukiBot" },
+    "API_ID":        { "description": "Telegram API ID (my.telegram.org)", "required": true },
+    "API_HASH":      { "description": "Telegram API Hash",              "required": true },
+    "BOT_TOKEN":     { "description": "Bot token from @BotFather",      "required": true },
+    "LOG_CHANNEL":   { "description": "Telegram log channel ID",        "required": true },
+    "MONGO_URI":     { "description": "MongoDB Atlas connection string", "required": true },
+    "DB_NAME":       { "description": "MongoDB database name",          "value": "FuyukiBot" },
+    "TIMEZONE":      { "description": "Timezone (e.g. Asia/Kolkata)",   "value": "Asia/Kolkata" },
+    "BUILD_VERSION": { "description": "Build version tag",              "value": "v1.4" },
+    "PORT":          { "description": "Web port (keep 8080)",           "value": "8080" }
+  },
+  "formation": {
+    "worker": { "quantity": 1, "size": "free" }
+  },
+  "buildpacks": [],
+  "stack": "container"
+}

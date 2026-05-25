@@ -11,4 +11,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 COPY . .
 
+EXPOSE 8080
+
 CMD ["python3", "bot.py"]
